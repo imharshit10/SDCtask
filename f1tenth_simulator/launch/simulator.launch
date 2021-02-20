@@ -37,9 +37,9 @@
 
   <!-- ***Put launch command for new planner here:-->
   <!-- Launch the New Planner Node -->
-     <!--node pkg="f1tenth_simulator" name="sdc" type="sdc.py" output="screen">
+     <node pkg="f1tenth_simulator" name="sdc" type="sdc.py" output="screen">
      <rosparam command="load" file="$(find f1tenth_simulator)/params.yaml"/>
-  	 </node-->   
+  	 </node>   
 
   
   <!-- Launch RVIZ -->
