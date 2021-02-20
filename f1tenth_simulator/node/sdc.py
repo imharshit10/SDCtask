@@ -14,7 +14,7 @@ class test():
 
             self.pub = rospy.Publisher('/drive', AckermannDriveStamped, queue_size=5)
             self.ADS = AckermannDriveStamped()
-            self.v = 1
+            self.v = 2
             self.kp = -0.5
             self.kd = -0.1
             self.c_error = 0
@@ -52,15 +52,21 @@ class test():
         alpha = math.atan( (a * math.cos(rad) - r)/ a * math.sin(rad) )
         AB = r * math.cos(alpha) 
         CD = AB + 1 * math.sin(alpha) 
-        dist =  1.5  #(l+r)/2
+        dist =  1.5
         error = dist - CD 
         
         self.c_error = error
         de = self.c_error - self.p_error
         p = 0
-        p = p - self.pid(self.c_error, de)
+        z = self.pid(self.c_error, de)
+        p = p - z
         self.p_error = self.c_error
-        
+        if(p!=0):
+            self.v = (1/abs(z))
+        if(self.v < 1):
+            self.v = 0.8
+        elif(self.v > 4):
+            self.v = 4
         self.ADS.drive.steering_angle = p
         self.ADS.drive.speed = self.v
         self.pub.publish(self.ADS)
